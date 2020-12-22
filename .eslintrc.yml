@@ -1,0 +1,27 @@
+env:
+  browser: true
+  es6: true
+  jest: true
+root: true
+parser: '@typescript-eslint/parser'
+parserOptions:
+  ecmaVersion: 12
+  ecmaFeatures:
+    jsx: true
+  sourceType: module
+plugins:
+  - react-hooks
+  - react
+  - '@typescript-eslint'
+settings:
+  react:
+    version: detact
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:react/recommended
+  - plugin:react-hooks/recommended
+  - prettier
+rules:
+  "react/jsx-uses-react": "off"
+  "react/react-in-jsx-scope": "off"
