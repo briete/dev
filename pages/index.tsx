@@ -1,9 +1,9 @@
-import Layout from '../components/Layout'
+import Layout from '../components/Layout';
 
 const IndexPage = () => (
-    <Layout title="yanao.dev">
-        <h1>Blog Posts</h1>
-    </Layout>
-)
+  <Layout title="yanao.dev">
+    <h1>Blog Posts</h1>
+  </Layout>
+);
 
-export default IndexPage
+export default IndexPage;
