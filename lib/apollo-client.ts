@@ -2,15 +2,15 @@ import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { useMemo } from 'react';
 
-const ContentfulGraphQLApi = process.env.CONTENTFUL_GRAPHQL_API!;
-const ContentfulDeliveryAccessToken = process.env.CONTENTFUL_DELIVERY_ACCESS_TOKEN;
+const MicroCmsGraphQLApi = process.env.MICROCMS_GRAPHQL_API!;
+const MicroCmsApiKey = process.env.MICROCMS_API_KEY!;
 
-let apolloClient;
+let apolloClient: any;
 
 function createApolloClient(): ApolloClient<any> {
   // ContentfulのGraphQL APIを設定
   const httpLink = createHttpLink({
-    uri: ContentfulGraphQLApi,
+    uri: MicroCmsGraphQLApi,
   });
 
   // Contentfulのアクセストークンを設定
@@ -18,7 +18,7 @@ function createApolloClient(): ApolloClient<any> {
     return {
       headers: {
         ...headers,
-        authorization: ContentfulDeliveryAccessToken ? `Bearer ${ContentfulDeliveryAccessToken}` : '',
+        authorization: MicroCmsApiKey ? `Bearer ${MicroCmsApiKey}` : '',
       },
     };
   });
@@ -33,21 +33,19 @@ function createApolloClient(): ApolloClient<any> {
 export function initializeApollo(initialState: any = null): ApolloClient<any> {
   const _apolloClient = apolloClient ?? createApolloClient();
 
-  // If your page has Next.js data fetching methods that use Apollo Client,
-  // the initial state gets hydrated here
+  // ページにApollo Clientを使用したNext.jsのデータ取得メソッドがある場合
   if (initialState) {
-    // Get existing cache, loaded during client side data fetching
+    // クライアント側のデータ取得中に読み込まれた既存のキャッシュを取得します
     const existingCache = _apolloClient.extract();
 
-    // Restore the cache using the data passed from
-    // getStaticProps/getServerSideProps combined with the existing cached data
+    // getStaticProps/getServerSideProps から渡されたデータと既存のキャッシュデータを組み合わせてキャッシュを復元します。
     _apolloClient.cache.restore({ ...existingCache, ...initialState });
   }
 
-  // For SSG and SSR always create a new Apollo Client
+  // SSGとSSRでは、常に新しいApollo Clientを作成します
   if (typeof window === 'undefined') return _apolloClient;
 
-  // Create the Apollo Client once in the client
+  // クライアントで一度 apollo client を作成
   if (!apolloClient) apolloClient = _apolloClient;
   return _apolloClient;
 }

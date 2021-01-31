@@ -8,7 +8,10 @@
     "start": "next start",
     "type-check": "tsc",
     "lint": "eslint './**/*.{ts,tsx}'",
-    "lint-fix": "eslint --fix './**/*.{ts,tsx}' && prettier --write './**/*.{ts,tsx}'"
+    "lint-fix": "eslint --fix './**/*.{ts,tsx}' && prettier --write './**/*.{ts,tsx}'",
+    "codegen:get-schema": "aws --region ap-northeast-1 appsync get-introspection-schema --api-id ${AWS_APPSYNC_API_ID} --format SDL --include-directives graphql/schema.graphql",
+    "codegen:docsgen": "amplify-graphql-docs-generator --schema graphql/schema.graphql --output graphql/all-operations.graphql --language graphql",
+    "codegen": "yarn codegen:get-schema && yarn codegen:docsgen && graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@apollo/client": "^3.3.6",
@@ -21,11 +24,17 @@
     "tailwindcss": "^2.0.2"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "1.20.1",
+    "@graphql-codegen/introspection": "^1.18.1",
+    "@graphql-codegen/typescript": "1.20.2",
+    "@graphql-codegen/typescript-operations": "1.17.14",
+    "@graphql-codegen/typescript-react-apollo": "2.2.1",
     "@types/node": "^12.12.21",
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",
     "@typescript-eslint/eslint-plugin": "^4.11.0",
     "@typescript-eslint/parser": "^4.11.0",
+    "amplify-graphql-docs-generator": "^2.2.1",
     "eslint": "^7.16.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-react": "^7.21.5",
