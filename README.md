@@ -4,9 +4,9 @@
 
 [https://nextjs.org/](https://nextjs.org/)
 
-## Contentful
+## microCMS
 
-[https://www.contentful.com/](https://www.contentful.com/)
+[microCMS](https://microcms.io/)
 
 ## tailwindcss
 
