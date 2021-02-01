@@ -7,7 +7,3 @@
 ## microCMS
 
 [microCMS](https://microcms.io/)
-
-## tailwindcss
-
-[https://tailwindcss.com/](https://tailwindcss.com/)
