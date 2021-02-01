@@ -1,0 +1,30 @@
+# this is an auto generated file. This will be overwritten
+query Post($id: ID!) {
+  post(id: $id) {
+    body
+    createdAt
+    id
+    publishedAt
+    revisedAt
+    tags
+    title
+    updatedAt
+  }
+}
+query Posts {
+  posts {
+    contents {
+      body
+      createdAt
+      id
+      publishedAt
+      revisedAt
+      tags
+      title
+      updatedAt
+    }
+    limit
+    offset
+    totalCount
+  }
+}

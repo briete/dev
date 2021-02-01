@@ -1,0 +1,26 @@
+schema {
+  query: Query
+}
+
+type Post {
+  body: String!
+  createdAt: String!
+  id: String!
+  publishedAt: String!
+  revisedAt: String!
+  tags: String!
+  title: String!
+  updatedAt: String!
+}
+
+type Posts {
+  contents: [Post!]!
+  limit: Int!
+  offset: Int!
+  totalCount: Int!
+}
+
+type Query {
+  post(id: ID!): Post
+  posts: Posts
+}

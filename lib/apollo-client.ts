@@ -2,27 +2,31 @@ import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { useMemo } from 'react';
 
-const MicroCmsGraphQLApi = process.env.MICROCMS_GRAPHQL_API!;
-const MicroCmsApiKey = process.env.MICROCMS_API_KEY!;
+const AppSyncGraphQLApi = process.env.APPSYNC_GRAPHQL_API!;
+const MicroCmsApiKey = process.env.MICRO_CMS_API_KEY!;
+
+export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
 let apolloClient: any;
 
 function createApolloClient(): ApolloClient<any> {
-  // ContentfulのGraphQL APIを設定
+  // AppSyncのGraphQL APIを設定
   const httpLink = createHttpLink({
-    uri: MicroCmsGraphQLApi,
+    uri: AppSyncGraphQLApi,
   });
 
-  // Contentfulのアクセストークンを設定
+  // MicroCMSのアクセストークンを設定
   const authLink = setContext((_, { headers }) => {
     return {
       headers: {
         ...headers,
-        authorization: MicroCmsApiKey ? `Bearer ${MicroCmsApiKey}` : '',
+        'X-API-KEY': MicroCmsApiKey ?? '',
       },
     };
   });
 
+  // ApolloClientのインスタンスを作成
+  // Apollo Linkを使って、AuthLinkとHttpLinkをConcatする
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link: authLink.concat(httpLink),
@@ -48,6 +52,14 @@ export function initializeApollo(initialState: any = null): ApolloClient<any> {
   // クライアントで一度 apollo client を作成
   if (!apolloClient) apolloClient = _apolloClient;
   return _apolloClient;
+}
+
+export function addApolloState(client: ApolloClient<any>, pageProps: any) {
+  if (pageProps?.props) {
+    pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
+  }
+
+  return pageProps;
 }
 
 /**
