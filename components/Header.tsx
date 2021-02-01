@@ -7,7 +7,7 @@ export const Header: React.FC = () => {
       <div className="flex justify-center">
         <Link href="/">
           <a>
-            <div className="text-4xl">yanao.dev</div>
+            <div>yanao.dev</div>
           </a>
         </Link>
       </div>
