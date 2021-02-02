@@ -1,16 +1,14 @@
-import Link from 'next/link';
 import React from 'react';
 
 export const Header: React.FC = () => {
   return (
-    <header className="fixed inset-0 z-50 w-full bg-white shadow h-16">
-      <div className="flex justify-center">
-        <Link href="/">
-          <a>
-            <div>yanao.dev</div>
-          </a>
-        </Link>
+    <nav className="uk-navbar-container uk-margin" data-uk-navbar>
+      <div className="uk-navbar-center">
+        <div className="uk-navbar-center-left"></div>
+        <a className="uk-navbar-item uk-logo" href="#">
+          YANAO.DEV
+        </a>
       </div>
-    </header>
+    </nav>
   );
 };

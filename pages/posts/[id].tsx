@@ -10,8 +10,8 @@ const MicroCmsApiKey = process.env.MICRO_CMS_API_KEY!;
 type PostProps = {
   data: {
     title: string;
-    tags: string;
     body: string;
+    publishedAt: string;
   };
   loading: boolean;
 };
@@ -22,15 +22,11 @@ type PostProps = {
  */
 const PostPage: React.FC<PostProps> = ({ data }) => (
   <Layout title="yanao.dev">
-    <main>
+    <article>
       <h1>{data.title}</h1>
-      <p>{data.tags}</p>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: data.body,
-        }}
-      />
-    </main>
+      <p>{data.publishedAt}</p>
+      {data.body}
+    </article>
   </Layout>
 );
 
@@ -38,15 +34,6 @@ const PostPage: React.FC<PostProps> = ({ data }) => (
  * ダイナミックルーティングのSSGの際に、ルーティングに対するパスを設定する
  */
 export const getStaticPaths: GetStaticPaths = async () => {
-  // const apolloClient = initializeApollo();
-  // const { data } = await apolloClient.query({
-  //   query: PostsDocument,
-  // });
-  // console.log(data);
-  // const paths = data.contents.map((content: any) => {
-  //   return { params: content.id };
-  // });
-
   const res = await axios.get(`${MicroCmsApiEndpoint}/posts`, {
     headers: {
       'X-API-KEY': MicroCmsApiKey,
@@ -66,15 +53,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
  * SSG microCMSから記事データを取得する
  */
 export const getStaticProps: GetStaticProps = async (context) => {
-  // const apolloClient = initializeApollo();
-  //
-  // const { data, loading } = await apolloClient.query({
-  //   query: PostDocument,
-  //   variables: {
-  //     id: context.params!.id,
-  //   },
-  // });
-
   const res = await axios.get(`${MicroCmsApiEndpoint}/posts/${context.params!.id}`, {
     headers: {
       'X-API-KEY': MicroCmsApiKey,
