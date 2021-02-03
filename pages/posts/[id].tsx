@@ -4,8 +4,8 @@ import axios from 'axios';
 import Layout from '../../components/Layout';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
-const MicroCmsApiEndpoint = process.env.MICRO_CMS_API_ENDPOINT!;
-const MicroCmsApiKey = process.env.MICRO_CMS_API_KEY!;
+const MicroCmsApiEndpoint = process.env.MICRO_CMS_API_ENDPOINT;
+const MicroCmsApiKey = process.env.MICRO_CMS_API_KEY;
 
 type PostProps = {
   data: {
@@ -53,11 +53,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
  * SSG microCMSから記事データを取得する
  */
 export const getStaticProps: GetStaticProps = async (context) => {
-  const res = await axios.get(`${MicroCmsApiEndpoint}/posts/${context.params!.id}`, {
-    headers: {
-      'X-API-KEY': MicroCmsApiKey,
-    },
-  });
+  const res = await axios.get(
+    `${MicroCmsApiEndpoint}/posts/${context.params?.id}`,
+    {
+      headers: {
+        'X-API-KEY': MicroCmsApiKey,
+      },
+    }
+  );
   const data = res.data;
 
   return {
