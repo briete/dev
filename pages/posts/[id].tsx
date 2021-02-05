@@ -14,7 +14,6 @@ type PostProps = {
     body: string;
     publishedAt: string;
   };
-  loading: boolean;
 };
 
 /**
@@ -23,11 +22,13 @@ type PostProps = {
  */
 const PostPage: React.FC<PostProps> = ({ data }) => (
   <Layout title="yanao.dev">
-    <article>
-      <h1>{data.title}</h1>
-      <p>{data.publishedAt}</p>
-      <ReactMarkdown>{data.body}</ReactMarkdown>
-    </article>
+    <div className="uk-container uk-container-small">
+      <article>
+        <h1>{data.title}</h1>
+        <p>{data.publishedAt}</p>
+        <ReactMarkdown>{data.body}</ReactMarkdown>
+      </article>
+    </div>
   </Layout>
 );
 
