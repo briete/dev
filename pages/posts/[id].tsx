@@ -36,7 +36,7 @@ const PostPage: React.FC<PostProps> = ({ data }) => (
  * ダイナミックルーティングのSSGの際に、ルーティングに対するパスを設定する
  */
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await axios.get(`${MicroCmsApiEndpoint}/posts`, {
+  const res = await axios.get(`${MicroCmsApiEndpoint}/posts?limit=100`, {
     headers: {
       'X-API-KEY': MicroCmsApiKey,
     },

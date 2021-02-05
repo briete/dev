@@ -45,7 +45,7 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
 
 // 記事一覧を取得する
 export const getStaticProps: GetStaticProps = async () => {
-  const res = await axios.get(`${MicroCmsApiEndpoint}/posts`, {
+  const res = await axios.get(`${MicroCmsApiEndpoint}/posts?limit=100`, {
     headers: {
       'X-API-KEY': MicroCmsApiKey,
     },
