@@ -28,7 +28,7 @@ type IndexProps = {
 
 const IndexPage: React.FC<IndexProps> = ({ data }) => {
   return (
-    <Layout title="yanao.dev">
+    <Layout title="briete.dev">
       <div className="uk-container">
         <div
           data-uk-grid
