@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import ReactMarkdown from 'react-markdown';
 
 import Layout from '../../components/Layout';
 import { GetStaticPaths, GetStaticProps } from 'next';
@@ -25,7 +26,7 @@ const PostPage: React.FC<PostProps> = ({ data }) => (
     <article>
       <h1>{data.title}</h1>
       <p>{data.publishedAt}</p>
-      {data.body}
+      <ReactMarkdown>{data.body}</ReactMarkdown>
     </article>
   </Layout>
 );
