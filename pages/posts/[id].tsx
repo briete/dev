@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
+import { Prism } from 'react-syntax-highlighter';
+import coy from 'react-syntax-highlighter/dist/cjs/styles/prism/coy';
 
 import Layout from '../../components/Layout';
 import { GetStaticPaths, GetStaticProps } from 'next';
@@ -16,6 +18,17 @@ type PostProps = {
   };
 };
 
+type PrismRenderProps = {
+  value: string;
+  language: string;
+};
+
+const PrismRender: React.FC<PrismRenderProps> = ({ value, language }) => (
+  <Prism language={language} style={coy}>
+    {value}
+  </Prism>
+);
+
 /**
  * ブログ記事ページ
  * @param data
@@ -26,7 +39,9 @@ const PostPage: React.FC<PostProps> = ({ data }) => (
       <article>
         <h1>{data.title}</h1>
         <p>{data.publishedAt}</p>
-        <ReactMarkdown>{data.body}</ReactMarkdown>
+        <ReactMarkdown renderers={{ code: PrismRender }}>
+          {data.body}
+        </ReactMarkdown>
       </article>
     </div>
   </Layout>
