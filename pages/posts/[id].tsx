@@ -7,6 +7,7 @@ import coy from 'react-syntax-highlighter/dist/cjs/styles/prism/coy';
 
 import Layout from '../../components/Layout';
 import { GetStaticPaths, GetStaticProps } from 'next';
+import { Content } from '..';
 
 const MicroCmsApiEndpoint = process.env.MICRO_CMS_API_ENDPOINT;
 const MicroCmsApiKey = process.env.MICRO_CMS_API_KEY;
@@ -35,8 +36,8 @@ const PrismRender: React.FC<PrismRenderProps> = ({ value, language }) => (
  * @param data
  */
 const PostPage: React.FC<PostProps> = ({ data }) => (
-  <Layout title="yanao.dev">
-    <div className="uk-container uk-container-small">
+  <Layout title="briete.dev">
+    <div>
       <article>
         <h1>{data.title}</h1>
         <p>{data.publishedAt}</p>
@@ -57,7 +58,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       'X-API-KEY': MicroCmsApiKey,
     },
   });
-  const paths = res.data.contents.map((content: any) => {
+  const paths = res.data.contents.map((content: Content) => {
     return { params: { id: content.id } };
   });
 
