@@ -13,7 +13,7 @@ const MicroCmsApiEndpoint = process.env.MICRO_CMS_API_ENDPOINT;
 const MicroCmsApiKey = process.env.MICRO_CMS_API_KEY;
 
 type PostProps = {
-  data: {
+  article: {
     title: string;
     body: string;
     publishedAt: string;
@@ -25,24 +25,49 @@ type PrismRenderProps = {
   language: string;
 };
 
+type HeadingRenderProps = {
+  children: any;
+  level: number;
+};
+
 const PrismRender: React.FC<PrismRenderProps> = ({ value, language }) => (
   <Prism language={language} style={coy}>
     {value}
   </Prism>
 );
 
+const HeadingRender: React.FC<HeadingRenderProps> = (props) => {
+  switch (props.level) {
+    case 1:
+      return <h1 className="title is-1">{props.children}</h1>;
+    case 2:
+      return <h2 className="title is-2">{props.children}</h2>;
+    case 3:
+      return <h3 className="title is-3">{props.children}</h3>;
+    case 4:
+      return <h4 className="title is-4">{props.children}</h4>;
+    default:
+      return <></>;
+  }
+};
+
 /**
  * ブログ記事ページ
- * @param data
+ * @param article 記事
  */
-const PostPage: React.FC<PostProps> = ({ data }) => (
+const PostPage: React.FC<PostProps> = ({ article }) => (
   <Layout title="briete.dev">
-    <div>
+    <div className="container is-max-desktop">
       <article>
-        <h1>{data.title}</h1>
-        <p>{data.publishedAt}</p>
-        <ReactMarkdown plugins={[gfm]} renderers={{ code: PrismRender }}>
-          {data.body}
+        <h1 className="title is-1">{article.title}</h1>
+        <ReactMarkdown
+          plugins={[gfm]}
+          renderers={{
+            code: PrismRender,
+            heading: HeadingRender,
+          }}
+        >
+          {article.body}
         </ReactMarkdown>
       </article>
     </div>
@@ -80,11 +105,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
       },
     }
   );
-  const data = res.data;
+  const article = res.data;
 
   return {
     props: {
-      data,
+      article,
     },
   };
 };
