@@ -7,7 +7,7 @@ type PostProps = {
 
 export const Post: React.FC<PostProps> = ({ id, title }) => {
   return (
-    <div>
+    <div className="post">
       <Link href={`/posts/${id}`}>
         <a>
           <h3>{title}</h3>
