@@ -3,7 +3,7 @@ import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import { Prism } from 'react-syntax-highlighter';
 import gfm from 'remark-gfm';
-import coy from 'react-syntax-highlighter/dist/cjs/styles/prism/coy';
+import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
 import Layout from '../../components/Layout';
 import { GetStaticPaths, GetStaticProps } from 'next';
@@ -12,10 +12,20 @@ import { Content } from '..';
 const MicroCmsApiEndpoint = process.env.MICRO_CMS_API_ENDPOINT;
 const MicroCmsApiKey = process.env.MICRO_CMS_API_KEY;
 
+type Tag = {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  revisedAt: string;
+};
+
 type PostProps = {
   article: {
     title: string;
     body: string;
+    tags: Tag[];
     publishedAt: string;
   };
 };
@@ -26,7 +36,7 @@ type PrismRenderProps = {
 };
 
 const PrismRender: React.FC<PrismRenderProps> = ({ value, language }) => (
-  <Prism language={language} style={coy}>
+  <Prism language={language} style={darcula}>
     {value}
   </Prism>
 );
@@ -40,6 +50,13 @@ const PostPage: React.FC<PostProps> = ({ article }) => (
     <div className="container is-max-desktop">
       <article className="content">
         <h1>{article.title}</h1>
+        <div className="tags">
+          {article.tags.map((tag: Tag) => (
+            <span key={tag.id} className="tag is-primary">
+              {tag.name}
+            </span>
+          ))}
+        </div>
         <ReactMarkdown
           plugins={[gfm]}
           renderers={{
