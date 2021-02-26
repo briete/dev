@@ -48,24 +48,26 @@ const PrismRender: React.FC<PrismRenderProps> = ({ value, language }) => (
 const PostPage: React.FC<PostProps> = ({ article }) => (
   <Layout title="briete.dev">
     <div className="container is-max-desktop">
-      <article className="content">
-        <h1>{article.title}</h1>
-        <div className="tags">
-          {article.tags.map((tag: Tag) => (
-            <span key={tag.id} className="tag is-primary">
-              {tag.name}
-            </span>
-          ))}
-        </div>
-        <ReactMarkdown
-          plugins={[gfm]}
-          renderers={{
-            code: PrismRender,
-          }}
-        >
-          {article.body}
-        </ReactMarkdown>
-      </article>
+      <section className="section">
+        <article className="content">
+          <h1>{article.title}</h1>
+          <div className="tags">
+            {article.tags.map((tag: Tag) => (
+              <span key={tag.id} className="tag is-primary">
+                {tag.name}
+              </span>
+            ))}
+          </div>
+          <ReactMarkdown
+            plugins={[gfm]}
+            renderers={{
+              code: PrismRender,
+            }}
+          >
+            {article.body}
+          </ReactMarkdown>
+        </article>
+      </section>
     </div>
   </Layout>
 );

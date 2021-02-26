@@ -1,18 +1,11 @@
 export const Footer: React.FC = () => (
-  <footer>
-    <div className="copy">© 2021 yanao.dev</div>
-    <style jsx>{`
-      footer {
-        width: 100%;
-        height: 100px;
-        bottom: 0;
-        color: black;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .copy {
-      }
-    `}</style>
+  <footer className="footer">
+    <div className="content has-text-centered">
+      <p>
+        <strong>briete.dev</strong>. The source code is licensed.
+        <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+        Copyright © 2020-2021 by briete
+      </p>
+    </div>
   </footer>
 );
