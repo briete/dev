@@ -3,6 +3,8 @@ import Head from 'next/head';
 import { Header } from './Header';
 import { Footer } from './Footer';
 
+import '@fortawesome/fontawesome-free/css/all.css';
+
 type Props = {
   children?: ReactNode;
   title?: string;

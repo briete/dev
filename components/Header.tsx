@@ -9,6 +9,29 @@ export const Header: React.FC = () => {
             briete.dev
           </a>
         </div>
+        <div className="navbar-end">
+          <div className="navbar-item">
+            <a href="https://twitter.com/briete_ns">
+              <span className="icon">
+                <i className="fab fa-twitter"></i>
+              </span>
+            </a>
+          </div>
+          <div className="navbar-item">
+            <a href="https://www.facebook.com/brietens">
+              <span className="icon">
+                <i className="fab fa-facebook"></i>
+              </span>
+            </a>
+          </div>
+          <div className="navbar-item">
+            <a href="https://github.com/briete">
+              <span className="icon">
+                <i className="fab fa-github"></i>
+              </span>
+            </a>
+          </div>
+        </div>
       </nav>
     </header>
   );

@@ -1,3 +1,5 @@
+import styles from './Footer.module.scss';
+
 export const Footer: React.FC = () => (
   <footer className="footer">
     <div className="content has-text-centered">

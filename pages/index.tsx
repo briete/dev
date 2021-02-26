@@ -1,8 +1,9 @@
 import axios from 'axios';
+import * as luxon from 'luxon';
 
 import { GetStaticProps } from 'next';
+import Link from 'next/link';
 import Layout from '../components/Layout';
-import { Post } from '../components/Post';
 
 const MicroCmsApiEndpoint = process.env.MICRO_CMS_API_ENDPOINT;
 const MicroCmsApiKey = process.env.MICRO_CMS_API_KEY;
@@ -29,9 +30,21 @@ type IndexProps = {
 const IndexPage: React.FC<IndexProps> = ({ data }) => {
   return (
     <Layout title="briete.dev">
-      {data.contents.map((content) => (
-        <Post key={content.id} id={content.id} title={content.title} />
-      ))}
+      <div
+        className="container is-max-desktop"
+        style={{ marginTop: '16px', marginBottom: '16px' }}
+      >
+        {data.contents.map((content) => (
+          <div key={content.id}>
+            <p>
+              {luxon.DateTime.fromISO(content.publishedAt).toISODate() + ' '}
+              <Link href={`/posts/${content.id}`}>
+                <a>{content.title}</a>
+              </Link>
+            </p>
+          </div>
+        ))}
+      </div>
     </Layout>
   );
 };
