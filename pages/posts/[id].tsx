@@ -1,38 +1,44 @@
-import React from 'react';
-import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import { Prism } from 'react-syntax-highlighter';
 import gfm from 'remark-gfm';
 import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-
 import Layout from '../../components/Layout';
-import { GetStaticPaths, GetStaticProps } from 'next';
-import { Content } from '..';
+import {
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetStaticPropsType,
+  NextPage,
+} from 'next';
+import { Content, Tag } from '../../types/micro-cms-type';
+import { getPost, getPosts } from '../../api/cms';
 
-const MicroCmsApiEndpoint = process.env.MICRO_CMS_API_ENDPOINT;
-const MicroCmsApiKey = process.env.MICRO_CMS_API_KEY;
-
-type Tag = {
-  id: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  revisedAt: string;
-};
-
-type PostProps = {
-  article: {
-    title: string;
-    body: string;
-    tags: Tag[];
-    publishedAt: string;
-  };
-};
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 type PrismRenderProps = {
   value: string;
   language: string;
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const data = await getPosts();
+  const paths = data.contents.map((content: Content) => {
+    return { params: { id: content.id } };
+  });
+
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const post = await getPost((context.params?.id as string) ?? '');
+
+  return {
+    props: {
+      post,
+    },
+  };
 };
 
 const PrismRender: React.FC<PrismRenderProps> = ({ value, language }) => (
@@ -41,18 +47,14 @@ const PrismRender: React.FC<PrismRenderProps> = ({ value, language }) => (
   </Prism>
 );
 
-/**
- * ブログ記事ページ
- * @param article 記事
- */
-const PostPage: React.FC<PostProps> = ({ article }) => (
+const PostPage: NextPage<Props> = ({ post }) => (
   <Layout title="briete.dev">
     <div className="container is-max-desktop">
       <section className="section">
         <article className="content">
-          <h1>{article.title}</h1>
+          <h1>{post.title}</h1>
           <div className="tags">
-            {article.tags.map((tag: Tag) => (
+            {post.tags.map((tag: Tag) => (
               <span key={tag.id} className="tag is-primary">
                 {tag.name}
               </span>
@@ -64,52 +66,12 @@ const PostPage: React.FC<PostProps> = ({ article }) => (
               code: PrismRender,
             }}
           >
-            {article.body}
+            {post.body}
           </ReactMarkdown>
         </article>
       </section>
     </div>
   </Layout>
 );
-
-/**
- * ダイナミックルーティングのSSGの際に、ルーティングに対するパスを設定する
- */
-export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await axios.get(`${MicroCmsApiEndpoint}/posts?limit=100`, {
-    headers: {
-      'X-API-KEY': MicroCmsApiKey,
-    },
-  });
-  const paths = res.data.contents.map((content: Content) => {
-    return { params: { id: content.id } };
-  });
-
-  return {
-    paths,
-    fallback: false,
-  };
-};
-
-/**
- * SSG microCMSから記事データを取得する
- */
-export const getStaticProps: GetStaticProps = async (context) => {
-  const res = await axios.get(
-    `${MicroCmsApiEndpoint}/posts/${context.params?.id}`,
-    {
-      headers: {
-        'X-API-KEY': MicroCmsApiKey,
-      },
-    }
-  );
-  const article = res.data;
-
-  return {
-    props: {
-      article,
-    },
-  };
-};
 
 export default PostPage;

@@ -2,6 +2,8 @@ import '../styles/globals.scss';
 
 import { AppProps } from 'next/app';
 
-export default function App({ Component, pageProps }: AppProps): any {
-  return <Component {...pageProps} />;
-}
+const App: any = ({ Component, pageProps }: AppProps) => (
+  <Component {...pageProps} />
+);
+
+export default App;

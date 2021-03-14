@@ -1,43 +1,32 @@
-import axios from 'axios';
 import * as luxon from 'luxon';
-
-import { GetStaticProps } from 'next';
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import Link from 'next/link';
+import { getPosts } from '../api/cms';
 import Layout from '../components/Layout';
+import { Content } from '../types/micro-cms-type';
 
-const MicroCmsApiEndpoint = process.env.MICRO_CMS_API_ENDPOINT;
-const MicroCmsApiKey = process.env.MICRO_CMS_API_KEY;
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-export type Content = {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  revisedAt: string;
-  title: string;
-  body: string;
-};
-
-type IndexProps = {
-  data: {
-    contents: Content[];
-    totalCount: number;
-    offset: number;
-    limit: number;
+export const getStaticProps: GetStaticProps = async () => {
+  const data = await getPosts();
+  return {
+    props: {
+      data,
+    },
   };
 };
 
-const IndexPage: React.FC<IndexProps> = ({ data }) => {
+const IndexPage: NextPage<Props> = ({ data }) => {
   return (
     <Layout title="briete.dev">
       <div
         className="container is-max-desktop"
         style={{ marginTop: '16px', marginBottom: '16px' }}
       >
-        {data.contents.map((content) => (
+        {data.contents.map((content: Content) => (
           <div key={content.id}>
             <p>
-              {luxon.DateTime.fromISO(content.publishedAt).toISODate() + ' '}
+              {luxon.DateTime.fromISO(content.publishedAt).toISO() + ' '}
               <Link href={`/posts/${content.id}`}>
                 <a>{content.title}</a>
               </Link>
@@ -47,21 +36,6 @@ const IndexPage: React.FC<IndexProps> = ({ data }) => {
       </div>
     </Layout>
   );
-};
-
-// 記事一覧を取得する
-export const getStaticProps: GetStaticProps = async () => {
-  const res = await axios.get(`${MicroCmsApiEndpoint}/posts?limit=100`, {
-    headers: {
-      'X-API-KEY': MicroCmsApiKey,
-    },
-  });
-  const data = res.data;
-  return {
-    props: {
-      data,
-    },
-  };
 };
 
 export default IndexPage;
