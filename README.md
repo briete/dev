@@ -1,9 +1,7 @@
-# dev
+# briete.dev
 
-## Next.js
+## [Next.js](https://nextjs.org/)
 
-[https://nextjs.org/](https://nextjs.org/)
+## [microCMS](https://microcms.io/)
 
-## microCMS
-
-[microCMS](https://microcms.io/)
+## [Bulma](https://bulma.io/)
